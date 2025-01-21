@@ -16,6 +16,17 @@ public class Suno_JOptionPan_012125_Jackson_K {
         //I want the program to take words like "rap" and "phonk"
         //And the output is "rap, rap, rap, phonk"
         String firstGenre = JOptionPane.showInputDialog(null, "Enter a song genre: ");
-        String secondGenre = JOptionPane.showInputDialog(null, "Enter another song genre: ");
+        //JOptionPane.showMessageDialog(null, mix, "Here's your custom mix: ", JOptionPane.INFORMATION_MESSAGE);
+        tell(mix);
+    }
+    
+    public static String ask(String question)
+    {
+        return JOptionPane.showInputDialog(null, question);
+    }
+    
+    public static void tell(String message)
+    {
+        JOptionPane.showMessageDialog(null, message);
     }
 }
