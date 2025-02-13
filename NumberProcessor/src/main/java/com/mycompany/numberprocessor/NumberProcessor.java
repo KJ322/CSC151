@@ -45,28 +45,35 @@ public class NumberProcessor
         final int CORRECT = 3;
         boolean keepPlaying = true;
         
+        
+        //guess a number
+        g.say("Pick a number between 1 and 100 and I'll guess it!");
+        playerNumber = g.getInteger();
+        
         while (keepPlaying)
         {
-            //guess a number
-            g.say("Pic a number between 1 and 100 and I'll guess it!");
-            playerNumber = g.getInteger();
             g.say("Is it " + guess + "?");
             g.say("Enter 1 for too low, 2 for too high, 3 for correct");
             Integer feedback = g.getInteger();
+        
             if (feedback ==  TOO_LOW)
             {
-                high = guess;
+                low = guess;
                 guess = (low + high) / 2;
             }
             else if (feedback == TOO_HIGH)
             {
-                low = guess;
+                high = guess;
                 guess = (low + high) / 2;
             }
             else if (feedback == CORRECT)
             {
                 g.say("I win!");
                 keepPlaying = false;
+                if (guess != playerNumber)
+                {
+                    g.say("Wait a minute...are you pulling my leg?");
+                }
             }
             else
             {
@@ -78,7 +85,7 @@ public class NumberProcessor
     
     public Integer getInteger() 
     {
-        String userInput = JOptionPane.showInputDialog("Enter an integer (ex. 42):");
+        String userInput = JOptionPane.showInputDialog("Enter an integer:");
         Integer result = this.process(userInput); // only allow ints
         // Show the answer, or a decent error message
         if (result != -1) 
