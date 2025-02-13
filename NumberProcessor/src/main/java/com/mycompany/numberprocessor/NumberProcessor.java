@@ -11,79 +11,90 @@ import javax.swing.JOptionPane;
  */
 public class NumberProcessor 
 {
-/**
-     * Processes a string input and attempts to convert it to an integer.This method demonstrates basic input validation and error handling. 
-     * Things to consider:
- 1. What should happen if the user enters nothing?
- 2. What should happen if the user enters "abc"?
- 3. What should happen if the user enters "3.14"?
-     * 
-     * @param input The string that should be converted to an integer
-     * @param isDouble false by default
-     * @return A message describing what happened during processing
-     */
-    public Integer process(String input, Boolean isDouble) 
+    
+    // Convert String into Integer (or -1 if error)
+    public Integer process(String input) 
     {
-        //if we provide true as the second input, then give us a number
-        
-        
         // -1 means error in this program
         Integer value = -1;
-        // Your code here
-        //try / catch
-        try
+        // try / catch
+        try 
         {
-            if (isDouble)
-            {
-                //convert string to double
-                Double dValue = Double.parseDouble(input);
-                //convert double to integer
-                value = dValue.intValue();
-            }
-            else
-            {
-                //convert string to integer
-                value = Integer.parseInt(input);
-            }
-            
+            // Convert String to Integer
+            value = Integer.parseInt(input); 
         }
-        catch (NumberFormatException e)
+        catch (NumberFormatException e) 
         {
-            System.err.println(input + " is not an Integer");
+            System.err.println(input + " is not an Integer!");
         }
         return value;
     }
-
+    
     public static void main(String[] args) 
     {
-        NumberProcessor processor = new NumberProcessor();
+        // Bake the class into an object so we can use it
+        NumberProcessor g = new NumberProcessor();
         
-        // Test Case 1: Ask for a number
-        String userInput = JOptionPane.showInputDialog("Enter a whole number (ex 42):");
-        Integer result = processor.process(userInput, false); // allows for double
+        //variables
+        int playerNumber;
+        int low = 1;
+        int high = 100;
+        int guess = (low + high) / 2;
+        final int TOO_LOW = 1;
+        final int TOO_HIGH = 2;
+        final int CORRECT = 3;
+        boolean keepPlaying = true;
         
-        //show answer, or error message
-        if (result != -1)
+        while (keepPlaying)
         {
-           JOptionPane.showMessageDialog(null, result); 
+            //guess a number
+            g.say("Pic a number between 1 and 100 and I'll guess it!");
+            playerNumber = g.getInteger();
+            g.say("Is it " + guess + "?");
+            g.say("Enter 1 for too low, 2 for too high, 3 for correct");
+            Integer feedback = g.getInteger();
+            if (feedback ==  TOO_LOW)
+            {
+                high = guess;
+                guess = (low + high) / 2;
+            }
+            else if (feedback == TOO_HIGH)
+            {
+                low = guess;
+                guess = (low + high) / 2;
+            }
+            else if (feedback == CORRECT)
+            {
+                g.say("I win!");
+                keepPlaying = false;
+            }
+            else
+            {
+                g.say("I don't even know what's happening. Bye!");
+                keepPlaying = false;
+            }
         }
-        else
-        {
-            JOptionPane.showMessageDialog(null, userInput + " is not an Integer");
-        }
-        
-        
-        // Test Case 2: What happens with invalid input?
-        userInput = JOptionPane.showInputDialog("Try entering something that isn't a whole number (ex 3.14):");
-        result = processor.process(userInput, true);
-        
-        if (result != -1)
+    }
+    
+    public Integer getInteger() 
+    {
+        String userInput = JOptionPane.showInputDialog("Enter an integer (ex. 42):");
+        Integer result = this.process(userInput); // only allow ints
+        // Show the answer, or a decent error message
+        if (result != -1) 
         {
             JOptionPane.showMessageDialog(null, result);
         }
-        else
+        else 
         {
-            JOptionPane.showMessageDialog(null, userInput + " is not an Integer");
-        }
+            JOptionPane.showMessageDialog(null, userInput + " is not an Integer!");
+            result = this.getInteger();
+        }      
+        return result;
+    }
+    
+    public void say(String message)
+    {
+        JOptionPane.showMessageDialog(null, message);
     }
 }
